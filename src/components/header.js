@@ -26,14 +26,8 @@ export const Header = () => {
       <Layout>
         <Header>
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="0">
-              <Link to="/inicio">Inicio</Link>
-            </Menu.Item>
             <Menu.Item key="1">
               <Link to="/">Valor Acciones</Link>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Link to="/acciones">Detalle Acciones</Link>
             </Menu.Item>
             <Menu.Item key="3">
               <Link to="/mercado-valores">Mercado Valores</Link>

@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { socket1 } from "./lib/socket";
 import Header from "./components/header";
-import Acciones from "./components/pages/acciones";
 import Mercado_Valores from "./components/pages/mercado-valores";
-import Inicio from "./components/pages/mercado-valores";
 import "antd/dist/antd.css";
 import { Layout } from "antd";
 import { Line, LineChart, XAxis, YAxis, Tooltip } from "recharts";
@@ -119,6 +117,8 @@ const App = () => {
       }
     });
   }, []);
+
+  // Obtenemos el último precio registrada para cada acción
   var ultimo_precio_ibm = 0;
   var ultimo_precio_fb = 0;
   var ultimo_precio_aapl = 0;
@@ -127,44 +127,45 @@ const App = () => {
   if (data1.length !== 0) {
     ultimo_precio_ibm = data1[data1.length - 1].value;
     if (data1.length > 1) {
-      var v2 = ultimo_precio_ibm;
-      var v1 = data1[data1.length - 2].value;
+      let v2 = ultimo_precio_ibm;
+      let v1 = data1[data1.length - 2].value;
       var variacion_ibm = ((v2 - v1) / v1) * 100;
     }
   }
   if (data2.length !== 0) {
     ultimo_precio_fb = data2[data2.length - 1].value;
     if (data2.length > 1) {
-      var v2 = ultimo_precio_fb;
-      var v1 = data2[data2.length - 2].value;
+      let v2 = ultimo_precio_fb;
+      let v1 = data2[data2.length - 2].value;
       var variacion_fb = ((v2 - v1) / v1) * 100;
     }
   }
   if (data3.length !== 0) {
     ultimo_precio_aapl = data3[data3.length - 1].value;
     if (data3.length > 1) {
-      var v2 = ultimo_precio_aapl;
-      var v1 = data3[data3.length - 2].value;
+      let v2 = ultimo_precio_aapl;
+      let v1 = data3[data3.length - 2].value;
       var variacion_aapl = ((v2 - v1) / v1) * 100;
     }
   }
   if (data4.length !== 0) {
     ultimo_precio_twtr = data4[data4.length - 1].value;
     if (data4.length > 1) {
-      var v2 = ultimo_precio_twtr;
-      var v1 = data4[data4.length - 2].value;
+      let v2 = ultimo_precio_twtr;
+      let v1 = data4[data4.length - 2].value;
       var variacion_twtr = ((v2 - v1) / v1) * 100;
     }
   }
   if (data5.length !== 0) {
     ultimo_precio_snap = data5[data5.length - 1].value;
     if (data5.length > 1) {
-      var v2 = ultimo_precio_snap;
-      var v1 = data5[data5.length - 2].value;
+      let v2 = ultimo_precio_snap;
+      let v1 = data5[data5.length - 2].value;
       var variacion_snap = ((v2 - v1) / v1) * 100;
     }
   }
 
+  //Calculamos el mínimo precio para cada acción
   var minimo_precio_ibm = Math.min.apply(
     Math,
     data1.map(function (o) {
@@ -195,6 +196,8 @@ const App = () => {
       return o.value;
     })
   );
+
+  //Calculamos el máximo precio para cada acción
   var maximo_precio_ibm = Math.max.apply(
     Math,
     data1.map(function (o) {
@@ -227,6 +230,87 @@ const App = () => {
     })
   );
 
+  // Por último, obtenemos el volumen transado hasta el momento
+  //IBM
+  var sum_volume_buy_ibm = 0;
+  if (data1_buy.length !== 0) {
+    for (var i in data1_buy) {
+      sum_volume_buy_ibm += data1_buy[i].volume;
+    }
+  }
+  var sum_volume_sell_ibm = 0;
+  if (data1_sell.length !== 0) {
+    for (var j in data1_sell) {
+      sum_volume_sell_ibm += data1_sell[j].volume;
+    }
+  }
+  //FB
+  var sum_volume_buy_fb = 0;
+  if (data2_buy.length !== 0) {
+    for (var k in data2_buy) {
+      sum_volume_buy_fb += data2_buy[k].volume;
+    }
+  }
+  var sum_volume_sell_fb = 0;
+  if (data2_sell.length !== 0) {
+    for (var l in data2_sell) {
+      sum_volume_sell_fb += data2_sell[l].volume;
+    }
+  }
+  //AAPL
+  var sum_volume_buy_aapl = 0;
+  if (data3_buy.length !== 0) {
+    for (var p in data3_buy) {
+      sum_volume_buy_aapl += data3_buy[p].volume;
+    }
+  }
+  var sum_volume_sell_aapl = 0;
+  if (data3_sell.length !== 0) {
+    for (var o in data3_sell) {
+      sum_volume_sell_aapl += data3_sell[o].volume;
+    }
+  }
+  //TWTR
+  var sum_volume_buy_twtr = 0;
+  if (data4_buy.length !== 0) {
+    for (var y in data4_buy) {
+      sum_volume_buy_twtr += data4_buy[y].volume;
+    }
+  }
+  var sum_volume_sell_twtr = 0;
+  if (data4_sell.length !== 0) {
+    for (var t in data4_sell) {
+      sum_volume_sell_twtr += data4_sell[t].volume;
+    }
+  }
+  // SNAP
+  var sum_volume_buy_snap = 0;
+  if (data5_buy.length !== 0) {
+    for (var r in data5_buy) {
+      sum_volume_buy_snap += data5_buy[r].volume;
+    }
+  }
+  var sum_volume_sell_snap = 0;
+  if (data5_sell.length !== 0) {
+    for (var e in data5_sell) {
+      sum_volume_sell_snap += data5_sell[e].volume;
+    }
+  }
+
+  var volumen_ibm = sum_volume_buy_ibm + sum_volume_sell_ibm;
+  var volumen_fb = sum_volume_buy_fb + sum_volume_sell_fb;
+  var volumen_aapl = sum_volume_buy_aapl + sum_volume_sell_aapl;
+  var volumen_twtr = sum_volume_buy_twtr + sum_volume_sell_twtr;
+  var volumen_snap = sum_volume_buy_snap + sum_volume_sell_snap;
+
+  var grafico = (
+    <LineChart width={500} height={300} data={data1}>
+      <XAxis dataKey="time" />
+      <YAxis />
+      <Tooltip />
+      <Line type="monotone" dataKey="value" />
+    </LineChart>
+  );
   return (
     <Router>
       <div>
@@ -236,14 +320,29 @@ const App = () => {
           path="/"
           render={(props) => (
             <Layout>
+              <table>
+                <tr>
+                  <th>Nombre Acción</th>
+                  <th>Compañía</th>
+                  <th>País</th>
+                  <th>Moneda</th>
+                </tr>
+                {data ? (
+                  data.map((element) => (
+                    <tr>
+                      <td>{element.ticker}</td>
+                      <td>{element.company_name}</td>
+                      <td>{element.country}</td>
+                      <td>{element.quote_base}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <h1>Cargando...</h1>
+                )}
+              </table>
               <Content>
                 <h1>IBM</h1>
-                <LineChart width={500} height={300} data={data1}>
-                  <XAxis dataKey="time" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" />
-                </LineChart>
+                {grafico}
                 <table>
                   <tr>
                     <th>Último Precio</th>
@@ -256,7 +355,7 @@ const App = () => {
                     <td>{ultimo_precio_ibm}</td>
                     <td>{maximo_precio_ibm}</td>
                     <td>{minimo_precio_ibm}</td>
-                    <td>0</td>
+                    <td>{volumen_ibm}</td>
                     <td>{variacion_ibm}%</td>
                   </tr>
                 </table>
@@ -279,7 +378,7 @@ const App = () => {
                     <td>{ultimo_precio_fb}</td>
                     <td>{maximo_precio_fb}</td>
                     <td>{minimo_precio_fb}</td>
-                    <td>0</td>
+                    <td>{volumen_fb}</td>
                     <td>{variacion_fb}%</td>
                   </tr>
                 </table>
@@ -302,7 +401,7 @@ const App = () => {
                     <td>{ultimo_precio_aapl}</td>
                     <td>{maximo_precio_aapl}</td>
                     <td>{minimo_precio_aapl}</td>
-                    <td>0</td>
+                    <td>{volumen_aapl}</td>
                     <td>{variacion_aapl}%</td>
                   </tr>
                 </table>
@@ -325,7 +424,7 @@ const App = () => {
                     <td>{ultimo_precio_twtr}</td>
                     <td>{maximo_precio_twtr}</td>
                     <td>{minimo_precio_twtr}</td>
-                    <td>0</td>
+                    <td>{volumen_twtr}</td>
                     <td>{variacion_twtr}%</td>
                   </tr>
                 </table>
@@ -348,7 +447,7 @@ const App = () => {
                     <td>{ultimo_precio_snap}</td>
                     <td>{maximo_precio_snap}</td>
                     <td>{minimo_precio_snap}</td>
-                    <td>0</td>
+                    <td>{volumen_snap}</td>
                     <td>{variacion_snap}%</td>
                   </tr>
                 </table>
@@ -356,9 +455,7 @@ const App = () => {
             </Layout>
           )}
         />
-        <Route path="/acciones" component={Acciones} />
         <Route path="/mercado-valores" component={Mercado_Valores} />
-        <Route path="/inicio" component={Inicio} />
       </div>
     </Router>
   );
