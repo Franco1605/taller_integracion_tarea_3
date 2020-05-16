@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { socket1 } from "../lib/socket";
+import { socket1, socket2 } from "../lib/socket";
 import "antd/dist/antd.css";
 import { Button, Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -16,9 +16,11 @@ export const Header = () => {
     if (state.texto === "Apagar Socket") {
       setState({ estado: "Usted está Desconectado", texto: "Prender Socket" });
       socket1.disconnect();
+      socket2.disconnect();
     } else {
       setState({ estado: "Usted está Conectado", texto: "Apagar Socket" });
       socket1.connect();
+      socket2.connect();
     }
   };
   return (

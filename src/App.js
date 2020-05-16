@@ -12,9 +12,9 @@ const { Content } = Layout;
 
 const App = () => {
   const [data, setData] = useState(); // Contiene la información de todos los ticker a ser evaluados
-  const [data_update, setDataUpdate] = useState([]);
-  const [data_buy, setDataBuy] = useState([]);
-  const [data_sell, setDataSell] = useState([]);
+  const [data_update, setDataUpdate] = useState([]); // Contiene la información de todos los ticker que entrega update
+  const [data_buy, setDataBuy] = useState([]); // Contiene la información de todos los ticker que entrega buy
+  const [data_sell, setDataSell] = useState([]); // Contiene la información de todos los ticker que entrega buy
 
   // Guardamos en data los tickers disponibles
   useEffect(() => {
@@ -73,10 +73,18 @@ const App = () => {
     });
   }, []);
 
+  var info_acciones = [];
   var diccionario_valores = {};
   if (data !== undefined) {
     for (var i in data) {
       diccionario_valores[data[i].ticker] = { update: [], buy: [], sell: [] };
+      let accion = [
+        data[i].ticker,
+        data[i].company_name,
+        data[i].country,
+        data[i].quote_base,
+      ];
+      info_acciones.push(accion);
     }
   }
   if (data !== undefined && data_update !== undefined) {
@@ -171,9 +179,7 @@ const App = () => {
       lista_estadisticas.push(lista_accion);
     }
   }
-  console.log("/////////////");
-  console.log(lista_estadisticas);
-  console.log("/////////////");
+
   return (
     <Router>
       <div>
@@ -184,6 +190,23 @@ const App = () => {
           render={(props) => (
             <Layout>
               <Content>
+                {info_acciones.map((elemento) => (
+                  <table>
+                    <tr>
+                      <th>Ticker</th>
+                      <th>Compañía/Empresa</th>
+                      <th>País</th>
+                      <th>Moneda</th>
+                    </tr>
+                    <tr>
+                      <td>{elemento[0]}</td>
+                      <td>{elemento[1]}</td>
+                      <td>{elemento[2]}</td>
+                      <td>{elemento[3]}</td>
+                    </tr>
+                  </table>
+                ))}
+
                 {lista.map((grafico) => (
                   <div>
                     {grafico[0]}
