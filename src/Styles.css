@@ -12,14 +12,17 @@ th {
 
 td {
   padding: 15px;
-  text-align: left;
+  text-align: center;
   border-bottom: 2px solid #ddd;
 }
 table {
-  margin-left: 600px;
-  margin-bottom: 80px;
+  margin: 0 auto
 }
 .grafico{
+  margin-left: 700px;
+  margin-bottom: 80px;
+}
+.grafico-line{
   margin-left: 600px;
   margin-bottom: 80px;
 }

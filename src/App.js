@@ -211,7 +211,7 @@ const App = () => {
                 </table>
 
                 {lista.map((grafico) => (
-                  <div className="grafico">
+                  <div className="grafico-line">
                     {grafico[0]}
                     {grafico[1]}
                   </div>
