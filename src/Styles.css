@@ -1,0 +1,28 @@
+h1 {
+  text-align: center;
+}
+
+th {
+  background-color: rgb(12, 33, 58);
+  color: white;
+  padding: 15px;
+  text-align: center;
+  border-bottom: 2px solid #ddd;
+}
+
+td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+table {
+  margin-left: 600px;
+  margin-bottom: 80px;
+}
+.grafico{
+  margin-left: 600px;
+  margin-bottom: 80px;
+}
+h2{
+  margin-right: 300px;
+}

@@ -7,6 +7,7 @@ import Mercado_Valores from "./components/pages/mercado-valores";
 import "antd/dist/antd.css";
 import { Layout } from "antd";
 import { Line, LineChart, XAxis, YAxis, Tooltip } from "recharts";
+import "./Styles.css";
 
 const { Content } = Layout;
 
@@ -110,7 +111,7 @@ const App = () => {
   if (diccionario_valores !== undefined) {
     for (var m in diccionario_valores) {
       let grafico = [
-        <h1>Gráfico {m}</h1>,
+        <h2>Gráfico {m}</h2>,
         <LineChart
           width={500}
           height={300}
@@ -132,6 +133,7 @@ const App = () => {
     for (var n in diccionario_valores) {
       var lista_accion = [];
       if (diccionario_valores[n].update.length !== 0) {
+        lista_accion.push(n);
         var ultimo_precio =
           diccionario_valores[n].update[
             diccionario_valores[n].update.length - 1
@@ -190,33 +192,36 @@ const App = () => {
           render={(props) => (
             <Layout>
               <Content>
-                {info_acciones.map((elemento) => (
-                  <table>
-                    <tr>
-                      <th>Ticker</th>
-                      <th>Compañía/Empresa</th>
-                      <th>País</th>
-                      <th>Moneda</th>
-                    </tr>
+                <h1>Acciones disponibles</h1>
+                <table>
+                  <tr>
+                    <th>Ticker</th>
+                    <th>Compañía/Empresa</th>
+                    <th>País</th>
+                    <th>Moneda</th>
+                  </tr>
+                  {info_acciones.map((elemento) => (
                     <tr>
                       <td>{elemento[0]}</td>
                       <td>{elemento[1]}</td>
                       <td>{elemento[2]}</td>
                       <td>{elemento[3]}</td>
                     </tr>
-                  </table>
-                ))}
+                  ))}
+                </table>
 
                 {lista.map((grafico) => (
-                  <div>
+                  <div className="grafico">
                     {grafico[0]}
                     {grafico[1]}
                   </div>
                 ))}
+                <h1>Estadísticas Generales</h1>
                 {lista_estadisticas.map((elemento) => (
                   <div>
                     <table>
                       <tr>
+                        <th>Acción</th>
                         <th>Último Precio</th>
                         <th>Precio más alto</th>
                         <th>Precio más bajo</th>
@@ -225,10 +230,11 @@ const App = () => {
                       </tr>
                       <tr>
                         <td>{elemento[0]}</td>
-                        <td>{elemento[2]}</td>
                         <td>{elemento[1]}</td>
-                        <td>{elemento[4]}</td>
-                        <td>{elemento[3]}%</td>
+                        <td>{elemento[3]}</td>
+                        <td>{elemento[2]}</td>
+                        <td>{elemento[5]}</td>
+                        <td>{elemento[4]}%</td>
                       </tr>
                     </table>
                   </div>
